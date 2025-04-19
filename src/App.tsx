@@ -10,7 +10,7 @@ import { MsgExecute } from "@initia/initia.js";
 
 const App = () => {
   const address = useAddress();
-  const { onboard, view, requestTx, bridge, requestInitiaTx } = useWallet();
+  const { onboard, view, requestTx, bridge } = useWallet();
 
   const send = async () => {
     if (!address) return;
@@ -44,54 +44,54 @@ const App = () => {
       const messageContentBase64 = "DEhlbGxvIEluaXRpYQ==";
 
       // 创建MsgExecute实例
-      const msg = new MsgExecute(
-        address,
-        contractAddress,
-        module,
-        functionName,
-        [], // typeArgs
-        [requestIdBase64, constantValueBase64, messageContentBase64]
-      );
+      // const msg = new MsgExecute(
+      //   address,
+      //   contractAddress,
+      //   module,
+      //   functionName,
+      //   [], // typeArgs
+      //   [requestIdBase64, constantValueBase64, messageContentBase64]
+      // );
 
-    //   const transactionHash = await requestInitiaTx({
-    //     msgs: [msg],
-    //     memo: "Upload signature for UUID"
-    //   });
+      //   const transactionHash = await requestInitiaTx({
+      //     msgs: [msg],
+      //     memo: "Upload signature for UUID"
+      //   });
 
-    //   console.log("Transaction Hash:", transactionHash);
+      //   console.log("Transaction Hash:", transactionHash);
 
       // 构造消息 - 直接使用原始代码中 MsgExecute 的参数顺序和格式
-    //   const messages = [
-    //     {
-    //       typeUrl: "/initia.move.v1.MsgExecute",
-    //       value: {
-    //         sender: address,
-    //         module_address: contractAddress,
-    //         module_name: module,
-    //         function_name: functionName,
-    //         type_args: [],
-    //         args: [requestIdBase64, constantValueBase64, messageContentBase64],
-    //       },
-    //     },
-    //   ];
+      const messages = [
+        {
+          typeUrl: "/initia.move.v1.MsgExecute",
+          value: {
+            sender: address,
+            module_address: contractAddress,
+            module_name: module,
+            function_name: functionName,
+            type_args: [],
+            args: [requestIdBase64, constantValueBase64, messageContentBase64],
+          },
+        },
+      ];
 
-    //   console.log("发送执行消息:", JSON.stringify(messages, null, 2));
+      //   console.log("发送执行消息:", JSON.stringify(messages, null, 2));
 
-    //   Request transaction
+      //   Request transaction
       const transactionHash = await requestTx({
-        messages:[msg],
+        messages,
         memo: `Upload signature for UUID`,
       });
 
       console.log("Transaction Hash:", transactionHash);
-        alert(`Signature uploaded! Hash: ${transactionHash}`);
+      alert(`Signature uploaded! Hash: ${transactionHash}`);
     } catch (error: unknown) {
       console.error("Upload signature failed:", error);
-      //   alert(
-      //     `Upload signature failed: ${
-      //       error instanceof Error ? error.message : String(error)
-      //     }`
-      //   );
+      alert(
+        `Upload signature failed: ${
+          error instanceof Error ? error.message : String(error)
+        }`
+      );
     }
   };
 
